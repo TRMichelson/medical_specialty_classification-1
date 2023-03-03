@@ -1,4 +1,5 @@
 black
+duckdb
 flake8
 pandas
 scikit-learn
