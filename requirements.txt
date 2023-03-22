@@ -9,4 +9,5 @@ pandas
 scikit-learn
 seaborn
 scispacy
+texthero
 umap
