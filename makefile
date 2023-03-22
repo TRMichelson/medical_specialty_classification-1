@@ -5,7 +5,7 @@
 
 # In make, $@ is a placeholder/substitution for the target name
 
-.PHONY: all clean
+.PHONY: all clean scispacy_model
 
 all: 
 
@@ -18,7 +18,10 @@ download_model:
 unarchive_model: ./nlp_models/en_core_sci_sm-0.5.1.tar.gz
 	tar -xf ./nlp_models/en_core_sci_sm-0.5.1.tar.gz -C ./nlp_models 
 
-scispacy_model: download_model unarchive_model
+install_model: 
+	pip install nlp_models/en_core_sci_sm-0.5.1
+
+scispacy_model: download_model unarchive_model install_model
 
 data/cleaned/medical_text_clean.csv: src/clean_data.py data/raw/medical_text.csv 
 	python src/clean_data.py -i data/raw/medical_text.csv -o data/cleaned/medical_text_clean.csv
