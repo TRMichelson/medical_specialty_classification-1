@@ -26,8 +26,8 @@ scispacy_model: download_scispacy_model unarchive_scispacy_model install_scispac
 data/cleaned/medical_text_clean.csv: src/clean_data.py data/raw/medical_text.csv 
 	python src/clean_data.py -i data/raw/medical_text.csv -o data/cleaned/medical_text_clean.csv
 
-data/processed/medical_text_preprocessed.csv: src/process_text.py data/cleaned/medical_text_clean.csv
-	python src/process_text.py -i data/cleaned/medical_text_clean.csv -o data/processed/medical_text_preprocessed.csv
+data/processed/medical_text_processed.csv: src/process_text.py data/cleaned/medical_text_clean.csv
+	python src/process_text.py -i data/cleaned/medical_text_clean.csv -o data/processed/medical_text_processed.csv
 
 delete_scispacy_model:
 	rm -r nlp_models

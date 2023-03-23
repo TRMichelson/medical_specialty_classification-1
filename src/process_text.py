@@ -29,13 +29,14 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def clean_text(nlp, text: str) -> str:
-    ''' Clean text using passed spacy language model'''
 
-    doc = nlp(text_lower)
+def clean_text(text: str, nlp_model) -> str:
+    ''' Clean text using passed spacy language model'''
 
     # lowercase string
     text_lower = text.lower()
+
+    doc = nlp_model(text_lower)
     
     # extract text if the token contains all letters and is not a stop work or punctuation mark
     tokens = [token.text for token in doc if (
@@ -47,10 +48,11 @@ def clean_text(nlp, text: str) -> str:
     # return extracted tokens as a joined string
     return " ".join(tokens)    
 
-def extract_entities(nlp, doc: str) -> str:
+
+def extract_entities(doc: str, nlp_model) -> str:
     ''' Extracts the text for entities identified in doc using passed spacy language model'''
 
-    doc = nlp(doc)
+    doc = nlp_model(doc)
     ent_list = [ent.text for ent in doc.ents]
 
     # return text for extracted entities as a joined string
@@ -66,13 +68,13 @@ def main():
     # load spacy (scispacy) model
     nlp = en_core_sci_sm.load()
 
-    # clean transcription texts and store into new col
-    text_df['tx_clean'] = text_df['transcription'].apply(nlp, clean_text)
+    # clean (preprocess) transcription texts and store into new col
+    text_df['tx_clean'] = text_df['transcription'].apply(clean_text, nlp_model=nlp)
 
-    # clean transcription texts and store into new col
-    text_df['tx_clean_ents'] = text_df['tx_clean'].apply(nlp, extract_entities)
+    # extract entities from clean transcription texts and store into new col
+    text_df['tx_clean_ents'] = text_df['tx_clean'].apply(extract_entities, nlp_model=nlp)
     
-    # write df with added text cols from processing to file 
+    # write df with newly added text cols to file 
     text_df.to_csv(args.output, index=False)
 
 if __name__ == "__main__":
