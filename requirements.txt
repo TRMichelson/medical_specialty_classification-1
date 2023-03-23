@@ -9,5 +9,5 @@ pandas
 scikit-learn
 seaborn
 scispacy
-texthero
-umap
+umap-learn
+umap-learn[plot]
