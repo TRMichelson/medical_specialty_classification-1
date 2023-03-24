@@ -13,7 +13,7 @@ requirements: requirements.txt
 	pip install -r requirements.txt
 
 download_scispacy_model: 
-	curl https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_core_sci_sm-0.5.1.tar.gz --create-dirs -o ./nlp_models/en_core_sci_sm-0.5.1.tar.gz 
+	curl https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_core_sci_sm-0.5.1.tar.gz -o ./nlp_models/en_core_sci_sm-0.5.1.tar.gz 
 
 unarchive_scispacy_model: ./nlp_models/en_core_sci_sm-0.5.1.tar.gz
 	tar -xf ./nlp_models/en_core_sci_sm-0.5.1.tar.gz -C ./nlp_models 
@@ -32,8 +32,8 @@ data/processed/medical_text_processed.csv: src/process_text.py data/cleaned/medi
 train_classifier:
 	python src/classify_with_tfidf.py -i data/processed/medical_text_processed.csv
 
-delete_scispacy_model:
-	rm -r nlp_models
+delete_nlp_models:
+	rm -r nlp_models/*.*
 
 clean: 
 	rm -r data/cleaned/medical_text_clean.csv
