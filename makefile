@@ -7,7 +7,7 @@
 
 .PHONY: all clean scispacy_model
 
-all: 
+all: data/cleaned/medical_text_clean.csv data/processed/medical_text_processed.csv train_classifier
 
 requirements: requirements.txt
 	pip install -r requirements.txt
@@ -29,10 +29,16 @@ data/cleaned/medical_text_clean.csv: src/clean_data.py data/raw/medical_text.csv
 data/processed/medical_text_processed.csv: src/process_text.py data/cleaned/medical_text_clean.csv
 	python src/process_text.py -i data/cleaned/medical_text_clean.csv -o data/processed/medical_text_processed.csv
 
+train_classifier:
+	python src/classify_with_tfidf.py -i data/processed/medical_text_processed.csv
+
 delete_scispacy_model:
 	rm -r nlp_models
 
 clean: 
 	rm -r data/cleaned/medical_text_clean.csv
+	rm -r data/processed/medical_text_processed.csv
+	rm -r reports/clf_report_logreg_tfidf_tx_clean_ents.csv
+	rm -r ml_models/logreg_tfidf_tx_clean_ents.joblib
 
 	
