@@ -1,1 +1,2 @@
-nlp_models
+nlp_models/en_core_sci_sm-0.5.1
+nlp_models/*.tar.gz
