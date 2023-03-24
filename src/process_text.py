@@ -1,7 +1,6 @@
 import argparse
 import pandas as pd
 from pathlib import Path
-import spacy
 import en_core_sci_sm
 
 

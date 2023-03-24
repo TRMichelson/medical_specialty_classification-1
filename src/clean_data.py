@@ -29,8 +29,6 @@ def parse_args():
 
 def main():
 
-    #text_df = pd.read_csv("data/raw/medical_text.csv").drop('Id', axis=1)
-
     args = parse_args()
 
     text_df = pd.read_csv(args.input).drop('Id', axis=1)
