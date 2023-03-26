@@ -20,17 +20,28 @@ def parse_args():
     parser.add_argument('-i',
                         '--input',
                         help='Path to input file',
-                        type=Path,      # Note that this requires import as follows “from pathlib import Path”
+                        type=Path,  # Note that this requires import as follows “from pathlib import Path”
                         default=None,
                         required=True)
 
-    # optional (keyword) argument with '-o' flag to specify path to output file(s) that will be generated
-    parser.add_argument('-o',
-                        '--output',
-                        help='Path to output file',
-                        type=Path,
+    
+    # optional (keyword) argument with '-o1' flag to specify path to output file that will be generated
+    parser.add_argument('-o1', 
+                        '--output_file1', 
+                        help='path to output classifier model',
+                        type=Path, 
                         default=None,
-                        required=False)
+                        required=True
+                        )
+    
+    # optional (keyword) argument with '-o2' flag to specify path to output file that will be generated
+    parser.add_argument('-o2', 
+                        '--output_file2', 
+                        help='path to output classifier report',
+                        type=Path, 
+                        default=None,
+                        required=True
+                        )
 
     args = parser.parse_args()
     return args
@@ -63,7 +74,7 @@ def main():
     clf.fit(X_train_tfidf, y_train)
 
     # Save model
-    dump(clf, "ml_models/logreg_tfidf_tx_clean_ents.joblib")
+    dump(clf, args.output_file1)
 
     # transform X_test with tfidf vectorizer we already fit on X_train 
     X_test_tfidf = vectorizer.transform(X_test)
@@ -78,7 +89,7 @@ def main():
 
     clf_report_df = pd.DataFrame(clf_report_dict).transpose()
 
-    clf_report_df.to_csv('reports/clf_report_logreg_tfidf_tx_clean_ents.csv')
+    clf_report_df.to_csv(args.output_file2)
 
     """
     fig, ax = plt.subplots(figsize=(10, 5))

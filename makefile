@@ -30,7 +30,7 @@ data/processed/medical_text_processed.csv: src/process_text.py data/cleaned/medi
 	python src/process_text.py -i data/cleaned/medical_text_clean.csv -o data/processed/medical_text_processed.csv
 
 train_classifier:
-	python src/classify_with_tfidf.py -i data/processed/medical_text_processed.csv
+	python src/classify_with_tfidf.py -i data/processed/medical_text_processed.csv -o1 ml_models/logreg_tfidf_tx_clean_ents.joblib -o2 reports/clf_report_logreg_tfidf_tx_clean_ents.csv
 
 delete_nlp_models:
 	rm -r nlp_models/*.*
