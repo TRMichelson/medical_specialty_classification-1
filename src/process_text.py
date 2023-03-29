@@ -7,12 +7,12 @@ import en_core_sci_sm
 def parse_args():
     """ Get command line arguments """
 
-    parser = argparse.ArgumentParser(description="Cleans input csv file")
+    parser = argparse.ArgumentParser(description="Uses spacy nlp model to do text cleaning/preprocessing on texts in transcription columns of input csv file and stores cleaned/preprocessed text as added columns in output csv file")
 
     # optional (keyword) argument with '-i' flag to accept pre-existing input file(s)
     parser.add_argument('-i',
                         '--input',
-                        help='Path to input file',
+                        help='Path to input csv file containing medical_specialty and transcription columns',
                         type=Path,      # Note that this requires import as follows “from pathlib import Path”
                         default=None,
                         required=True)
@@ -20,7 +20,7 @@ def parse_args():
     # optional (keyword) argument with '-o' flag to specify path to output file(s) that will be generated
     parser.add_argument('-o',
                         '--output',
-                        help='Path to output file',
+                        help='Path to output csv file with added columns containing cleaned/preprocessed texts',
                         type=Path,
                         default=None,
                         required=True)
@@ -30,7 +30,7 @@ def parse_args():
 
 
 def clean_text(text: str, nlp_model) -> str:
-    ''' Clean text using passed spacy language model'''
+    ''' Clean/preprocess text using passed spacy language model'''
 
     # lowercase string
     text_lower = text.lower()
@@ -49,9 +49,11 @@ def clean_text(text: str, nlp_model) -> str:
 
 
 def extract_entities(doc: str, nlp_model) -> str:
-    ''' Extracts the text for entities identified in doc using passed spacy language model'''
+    '''Extracts the text for entities identified in text (doc) using passed spacy language model'''
 
+    # apply spacy nlp model to text (doc)
     doc = nlp_model(doc)
+    # extract text for entities found in document 
     ent_list = [ent.text for ent in doc.ents]
 
     # return text for extracted entities as a joined string
@@ -60,8 +62,10 @@ def extract_entities(doc: str, nlp_model) -> str:
 
 def main():
 
+    # get command-line arguments
     args = parse_args()
 
+    # load dataframe from csv containing texts
     text_df = pd.read_csv(args.input)
 
     # load spacy (scispacy) model

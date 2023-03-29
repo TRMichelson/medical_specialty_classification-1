@@ -6,12 +6,13 @@ import pandas as pd
 def parse_args():
     """ Get command line arguments """
 
-    parser = argparse.ArgumentParser(description="Cleans input csv file")
+    parser = argparse.ArgumentParser(description="""Cleans input csv file by filtering out categories of medical_specialty 
+                                                that have too few records (<50 records) and categories that are too general (e.g. Progress Notes)""")
 
     # optional (keyword) argument with '-i' flag to accept pre-existing input file(s)
     parser.add_argument('-i',
                         '--input',
-                        help='Path to input file',
+                        help='Path to input csv file with raw data',
                         type=Path,      # Note that this requires import as follows “from pathlib import Path”
                         default=None,
                         required=True)
@@ -19,7 +20,7 @@ def parse_args():
     # optional (keyword) argument with '-o' flag to specify path to output file(s) that will be generated
     parser.add_argument('-o',
                         '--output',
-                        help='Path to output file',
+                        help='Path to output file that will contain filtered data',
                         type=Path,
                         default=None,
                         required=True)
@@ -68,7 +69,6 @@ def main():
 
     text_df_reduced_specialties = duckdb.query(filter_specialties).to_df()
 
-
     # Create new column with simplified specialty name
     simplify_specialty_names = '''
     SELECT
@@ -92,6 +92,7 @@ def main():
 
     text_df_renamed_specialties = duckdb.query(simplify_specialty_names).to_df()
 
+    # save filtered dataframe
     text_df_renamed_specialties.to_csv(args.output, index=False)
 
 if __name__ == "__main__":
