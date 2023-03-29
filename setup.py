@@ -1,5 +1,4 @@
-# install project src into project virtual environment from command line
-# with activated virtual environment using: 
+# To install project src into project virtual environment from command line:
 # > pip install -e .
 
 # to uninstall use:
