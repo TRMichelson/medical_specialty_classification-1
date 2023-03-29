@@ -5,9 +5,12 @@ duckdb
 flake8
 holoviews
 matplotlib
+numpy
 pandas
 scikit-learn
 seaborn
+scipy
 scispacy
 umap-learn
 umap-learn[plot]
+
